@@ -6,11 +6,45 @@
               [goog.history.EventType :as EventType])
     (:import goog.History))
 
+ 
+
+;; -------------------------
+;; Views
+(def center-x 150)
+(def center-y 150)
+(def radius 100)
+(def num-circles 25)
+(def circle-radius 15)
+
+
 ;; -------------------------
 ;; Views
 
+
+(defn letter-circle-component
+  [x y letter]
+  [:g {:transform (str "translate(" x "," y ")")}
+   [:circle {:r circle-radius :stroke "black" :stroke-witdth "3" :fill "red"}]
+   [:text {:dx "-1"} letter]])
+
+
+(defn build-circles
+  []
+  (let [get-circle (fn [x] {
+                            :x (Math/round (+ center-x (* radius (Math/cos (/ (* Math/PI 2 x) num-circles)))))
+                            :y (Math/round (+ center-y (* radius (Math/sin (/ (* Math/PI 2 x) num-circles)))))
+                            :letter (char (+ 65 x))})]
+       (map get-circle (range num-circles))))
+
+(defn board-component
+  []
+  [:svg {:height "500" :width "500"}
+   (for [circle (build-circles)]
+     [letter-circle-component (:x circle) (:y circle) (:letter circle)])])
+
 (defn home-page []
   [:div [:h2 "Welcome to passa-paraula"]
+   [board-component]
    [:div [:a {:href "#/about"} "go to about page"]]])
 
 (defn about-page []

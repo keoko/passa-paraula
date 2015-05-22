@@ -20,3 +20,7 @@
 - CSS circles
 - colours
 
+
+** Emacs
+- autocomplete
+- cider shortcuts
