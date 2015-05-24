@@ -1,8 +1,7 @@
 * passa-paraula
 
 ** TODO
-- state (ok, fail, and passed)
-- logic: jump to next passed letter
+- logic: highlight current letter
 - logic: end of game
 
 ** DONE
@@ -10,6 +9,11 @@
 - circles + letters
 - reagent integration
 - keyboard events
+- state (ok, fail, and passed)
+- logic: jump to next passed letter
+- how to debug clojurescript
+- figwheel
+
 
 ** NICE TO HAVE
 - A circle starts from left, not up
@@ -23,8 +27,6 @@
 - bootstrap
 - CSS circles
 - colours
-- how to debug clojurescript
-- figwheel
 
 ** Emacs
 - autocomplete

@@ -16,22 +16,36 @@
 (def num-letters 25)
 (def circle-radius 12)
 
-(def cur-letter-id (atom 0))
-
 (def status-colors {:ok "green"
                     :failed "red"
                     :pass "yellow"
                     :init "blue"})
 
+
+(defn init-status []
+  (vec (take num-letters (repeat :init))))
+
+(def app-state (atom {:pos 0
+                      :status (init-status)}))
+
+
 ;; -------------------------
 ;; Views
 
 
+(defn cur-letter-id []
+  (:pos @app-state))
+
 (defn letter-circle-component
   [x y pos letter]
   [:g {:transform (str "translate(" x "," y ")")}
-   ^{:key pos} [:circle {:id pos :r circle-radius :stroke "black" :stroke-witdth "3" :fill (:init status-colors)}]
-   [:text {:dx "-5" :dy "5"} letter]])
+   ^{:key pos} 
+   [:circle {:id pos 
+             :r circle-radius 
+             :stroke "black"
+             :stroke-witdth "3"
+             :fill (get status-colors (get-in @app-state [:status pos]))}]
+   [:Text {:dx "-5" :dy "5"} letter]])
 
 
 (defn build-circles
@@ -89,11 +103,19 @@
 
 (defn change-letter-status [letter-id status]
   (let [color (get status-colors status)
-        letter (.getElementById js/document @cur-letter-id)]
-    (set! (.-fill (.-style letter)) color)))
+        letter (.getElementById js/document letter-id)]
+    (set! (.-fill (.-style letter)) color)
+    (swap! app-state update-in [:status letter-id] (fn [_] status))))
 
 (defn jump-next-letter []
-  (swap! cur-letter-id #(mod (inc %) num-letters)))
+  (let [pos (cur-letter-id)
+        avail-pos (map first 
+                       (filter #(or (= (second %) :init)
+                                    (= (second %) :pass))
+                               (map-indexed vector (:status @app-state))))
+        first-greater-pos (first (filter #(> % pos) avail-pos))
+        first-pos (first avail-pos)]
+    (swap! app-state update-in [:pos] #(or first-greater-pos first-pos))))
 
 
 (defn handle-letter [letter-id status]
@@ -104,9 +126,9 @@
 (defn handle-keys [event]
   (when-let [key (.-charCode event)]
     (case key
-      111 (handle-letter @cur-letter-id :ok)
-      112 (handle-letter @cur-letter-id :pass)
-      107 (handle-letter @cur-letter-id :failed)
+      111 (handle-letter (cur-letter-id) :ok)
+      112 (handle-letter (cur-letter-id) :pass)
+      107 (handle-letter (cur-letter-id) :failed)
       (.log js/console (str "key pressed not valid" key)))))
 
 (defn hook-keyboard-listener 
@@ -118,7 +140,12 @@
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
 
+
+(defn init-state! []
+  (swap! app-state update-in [:status] #(vec (take num-letters (repeat :init)))))
+
 (defn init! []
+  (init-state!)
   (hook-browser-navigation!)
   (hook-keyboard-listener)
   (mount-root))
