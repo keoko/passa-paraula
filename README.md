@@ -1,11 +1,15 @@
 * passa-paraula
 
 ** TODO
+- state (ok, fail, and passed)
+- logic: jump to next passed letter
+- logic: end of game
+
+** DONE
 - circles
 - circles + letters
 - reagent integration
-- state (ok, fail, and passed)
-
+- keyboard events
 
 ** NICE TO HAVE
 - A circle starts from left, not up
@@ -19,8 +23,13 @@
 - bootstrap
 - CSS circles
 - colours
-
+- how to debug clojurescript
+- figwheel
 
 ** Emacs
 - autocomplete
 - cider shortcuts
+
+
+** links
+https://github.com/pointslope/reagent-svg-demo/blob/master/src/cljs/svg/app.cljs
