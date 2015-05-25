@@ -31,7 +31,8 @@
 ** Emacs
 - autocomplete
 - cider shortcuts
-
+- figwheel autocomplete
+- figwheel command history
 
 ** links
 https://github.com/pointslope/reagent-svg-demo/blob/master/src/cljs/svg/app.cljs

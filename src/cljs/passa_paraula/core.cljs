@@ -22,6 +22,12 @@
                     :init "blue"})
 
 
+(def letter-color "black")
+(def letter-width "1")
+(def highlight-letter-color "orange")
+(def highlight-letter-width "5")
+
+
 (defn init-status []
   (vec (take num-letters (repeat :init))))
 
@@ -42,8 +48,8 @@
    ^{:key pos} 
    [:circle {:id pos 
              :r circle-radius 
-             :stroke "black"
-             :stroke-witdth "3"
+             :stroke letter-color
+             :strokeWitdth letter-width
              :fill (get status-colors (get-in @app-state [:status pos]))}]
    [:Text {:dx "-5" :dy "5"} letter]])
 
@@ -105,7 +111,14 @@
   (let [color (get status-colors status)
         letter (.getElementById js/document letter-id)]
     (set! (.-fill (.-style letter)) color)
+    (set! (.-stroke (.-style letter)) letter-color)
+    (set! (.-strokeWidth (.-style letter)) letter-width)
     (swap! app-state update-in [:status letter-id] (fn [_] status))))
+
+(defn highlight-letter [letter-id]
+  (let [letter (.getElementById js/document letter-id)]
+    (set! (.-stroke (.-style letter)) highlight-letter-color)
+    (set! (.-strokeWidth (.-style letter)) highlight-letter-width)))
 
 (defn jump-next-letter []
   (let [pos (cur-letter-id)
@@ -121,7 +134,8 @@
 (defn handle-letter [letter-id status]
   (do
     (change-letter-status letter-id status)
-    (jump-next-letter)))
+    (jump-next-letter)
+    (highlight-letter (:pos @app-state))))
 
 (defn handle-keys [event]
   (when-let [key (.-charCode event)]
