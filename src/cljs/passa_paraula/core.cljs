@@ -129,12 +129,7 @@
 
 
 (defn change-letter-status [letter-id status]
-  (let [color (get status-colors status)
-        letter (.getElementById js/document letter-id)]
-    (set! (.-fill (.-style letter)) color)
-    (set! (.-stroke (.-style letter)) letter-color)
-    (set! (.-strokeWidth (.-style letter)) letter-width)
-    (swap! app-state update-in [:status letter-id] (fn [_] status))))
+  (swap! app-state update-in [:status letter-id] (fn [_] status)))
 
 
 (defn jump-next-letter []
@@ -177,7 +172,7 @@
       107 (handle-letter (cur-letter-id) :failed)
       (.log js/console (str "key pressed not valid" key)))))
  
-(defn hook-keyboard-listener 
+(defn hook-keyboard-listener
   []
    (.addEventListener js/window "keypress" handle-keys))
 
