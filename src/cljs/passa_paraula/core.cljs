@@ -13,19 +13,23 @@
 (def center-x 150)
 (def center-y 150)
 (def radius 100)
-(def num-letters 25)
 (def circle-radius 12)
 
 (def status-colors {:ok "green"
                     :failed "red"
                     :pass "yellow"
-                    :init "blue"})
+                    :init "blue"}) 
 
 
 (def letter-color "black")
 (def letter-width "1")
 (def highlight-letter-color "orange")
 (def highlight-letter-width "5")
+
+
+(def letters [\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \V \W \X \Y \Z])
+(def num-letters (count letters))
+
 
 
 (def starting-state {:pos 0
@@ -68,7 +72,7 @@
                             :x (Math/round (+ center-x (* radius (Math/cos (/ (* Math/PI 2 x) num-letters)))))
                             :y (Math/round (+ center-y (* radius (Math/sin (/ (* Math/PI 2 x) num-letters)))))
                             :pos x
-                            :letter (char (+ 65 x))})]
+                            :letter (get letters x)})]
        (map get-circle (range num-letters))))
 
 

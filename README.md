@@ -1,11 +1,12 @@
 # passa-paraula
 
 ## TODO
-- fix highlight first letter 'A'
 - timer
 - clean up README (install section, example, etc.)
 - how to play page (letters) or just some div with all keys used
 - refactor code (UI logic, game logic)
+- A circle starts from left, not up
+
 
 ## DONE
 - circles
@@ -20,14 +21,13 @@
 - logic: end of game
 - scoring
 - play again
+- fix highlight first letter 'A'
 
 
 ## NICE TO HAVE
-- A circle starts from left, not up
 - letter positioning inside the circle
 - positioning the big circle in the middle of the window
 - text positioning & font
-- timer
 - select letters set
 - responsive design
 - bootstrap
