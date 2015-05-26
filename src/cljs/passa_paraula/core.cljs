@@ -28,16 +28,15 @@
 (def highlight-letter-width "5")
 
 
-(defn init-status []
-  (vec (take num-letters (repeat :init))))
+(def starting-state {:pos 0
+                     :score 0
+                     :status (vec (take num-letters (repeat :init)))})
 
-(def app-state (atom {:pos 0
-                      :status (init-status)}))
+(def app-state (atom starting-state))
 
 
-(defn init-state! []
-  (reset! app-state {:pos 0
-                     :status (vec (take num-letters (repeat :init)))}))
+(defn reset-state! []
+  (reset! app-state starting-state))
 
 
 ;; -------------------------
@@ -77,7 +76,9 @@
 
 
 (defn home-page []
-  [:div [:h2 "Welcome to passa-paraula"]
+  [:div 
+   [:h2 "Welcome to passa-paraula"]
+   [:div {:id "score"} (str "score:" (:score @app-state))]
    [board-component]
    [:div [:a {:href "#/about"} "go to about page"]]])
 
@@ -88,6 +89,7 @@
 
 (defn end-page []
   [:div [:h2 "The End"]
+   [:div (str "score:" (:score @app-state))]
    [:div [:a {:href "#/about"} "go to the home page"]]])
 
 (defn current-page []
@@ -146,12 +148,19 @@
   (every? #(or (= :failed %) (= :ok %)) (:status @app-state)))
 
 (defn end-game []
-  (init-state!)
-  (secretary/dispatch! "/end")) 
+  (secretary/dispatch! "/end"))
+
+
+(defn score []
+  (count (filter #(= :ok %) (:status @app-state)))) 
+
+(defn update-score []
+  (swap! app-state update-in [:score] score))
 
 (defn handle-letter [letter-id status]
   (do
     (change-letter-status letter-id status)
+    (update-score)
     (jump-next-letter)
     (if (end-game?)
       (end-game)
@@ -177,7 +186,7 @@
 
 
 (defn init! []
-  (init-state!)
+  (reset-state!)
   (hook-browser-navigation!)
   (hook-keyboard-listener)
   (mount-root))
