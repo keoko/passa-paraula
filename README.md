@@ -1,8 +1,11 @@
 # passa-paraula
 
 ## TODO
-- timer
 - fix highlight first letter 'A'
+- timer
+- clean up README (install section, example, etc.)
+- how to play page (letters) or just some div with all keys used
+- refactor code (UI logic, game logic)
 
 ## DONE
 - circles
@@ -24,15 +27,14 @@
 - letter positioning inside the circle
 - positioning the big circle in the middle of the window
 - text positioning & font
-- chrono
+- timer
 - select letters set
-- counter
 - responsive design
 - bootstrap
 - CSS circles
 - colours
 
-## Emacs
+## Emacs & others
 - autocomplete
 - cider shortcuts
 - figwheel autocomplete

@@ -52,8 +52,12 @@
    ^{:key pos} 
    [:circle {:id pos 
              :r circle-radius 
-             :stroke letter-color
-             :strokeWitdth letter-width
+             :stroke (if (= pos (cur-letter-id)) 
+                       highlight-letter-color
+                       letter-color)
+             :strokeWidth (if (= pos (cur-letter-id)) 
+                             highlight-letter-width 
+                             letter-width)
              :fill (get status-colors (get-in @app-state [:status pos]))}]
    [:Text {:dx "-5" :dy "5"} letter]])
 
@@ -132,10 +136,6 @@
     (set! (.-strokeWidth (.-style letter)) letter-width)
     (swap! app-state update-in [:status letter-id] (fn [_] status))))
 
-(defn highlight-letter [letter-id]
-  (let [letter (.getElementById js/document letter-id)]
-    (set! (.-stroke (.-style letter)) highlight-letter-color)
-    (set! (.-strokeWidth (.-style letter)) highlight-letter-width)))
 
 (defn jump-next-letter []
   (let [pos (cur-letter-id)
@@ -166,9 +166,8 @@
     (change-letter-status letter-id status)
     (update-score)
     (jump-next-letter)
-    (if (end-game?)
-      (end-game)
-      (highlight-letter (:pos @app-state)))))
+    (when (end-game?)
+      (end-game))))
 
 (defn handle-keys [event]
   (when-let [key (.-charCode event)]
@@ -177,7 +176,7 @@
       112 (handle-letter (cur-letter-id) :pass)
       107 (handle-letter (cur-letter-id) :failed)
       (.log js/console (str "key pressed not valid" key)))))
-
+ 
 (defn hook-keyboard-listener 
   []
    (.addEventListener js/window "keypress" handle-keys))
@@ -186,7 +185,6 @@
 ;; Initialize app
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
-
 
 
 (defn init! []
