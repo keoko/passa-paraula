@@ -35,6 +35,11 @@
                       :status (init-status)}))
 
 
+(defn init-state! []
+  (reset! app-state {:pos 0
+                     :status (vec (take num-letters (repeat :init)))}))
+
+
 ;; -------------------------
 ;; Views
 
@@ -81,6 +86,9 @@
   [:div [:h2 "About passa-paraula"]
    [:div [:a {:href "#/"} "go to the home page"]]])
 
+(defn end-page []
+  [:div [:h2 "The End"]
+   [:div [:a {:href "#/about"} "go to the home page"]]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -94,6 +102,9 @@
 
 (secretary/defroute "/about" []
   (session/put! :current-page #'about-page))
+
+(secretary/defroute "/end" []
+  (session/put! :current-page #'end-page))
 
 ;; -------------------------
 ;; History
@@ -131,11 +142,20 @@
     (swap! app-state update-in [:pos] #(or first-greater-pos first-pos))))
 
 
+(defn end-game? []
+  (every? #(or (= :failed %) (= :ok %)) (:status @app-state)))
+
+(defn end-game []
+  (init-state!)
+  (secretary/dispatch! "/end")) 
+
 (defn handle-letter [letter-id status]
   (do
     (change-letter-status letter-id status)
     (jump-next-letter)
-    (highlight-letter (:pos @app-state))))
+    (if (end-game?)
+      (end-game)
+      (highlight-letter (:pos @app-state)))))
 
 (defn handle-keys [event]
   (when-let [key (.-charCode event)]
@@ -155,8 +175,6 @@
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 
-(defn init-state! []
-  (swap! app-state update-in [:status] #(vec (take num-letters (repeat :init)))))
 
 (defn init! []
   (init-state!)
