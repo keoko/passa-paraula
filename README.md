@@ -1,8 +1,8 @@
 # passa-paraula
 
 ## TODO
-- scoring
 - timer
+- fix highlight first letter 'A'
 
 ## DONE
 - circles
@@ -15,6 +15,8 @@
 - figwheel
 - logic: highlight current letter
 - logic: end of game
+- scoring
+- play again
 
 
 ## NICE TO HAVE

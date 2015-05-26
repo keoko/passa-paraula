@@ -90,7 +90,11 @@
 (defn end-page []
   [:div [:h2 "The End"]
    [:div (str "score:" (:score @app-state))]
-   [:div [:a {:href "#/about"} "go to the home page"]]])
+   [:div [:a {:href "#/" 
+              :on-click (fn [e] 
+                          (reset-state!)
+                          (secretary/dispatch! "/"))} 
+          "play again!"]]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
