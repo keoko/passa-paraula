@@ -34,6 +34,7 @@
 
 (def starting-state {:pos 0
                      :score 0
+                     :time 10
                      :status (vec (take num-letters (repeat :init)))})
 
 (def app-state (atom starting-state))
@@ -87,6 +88,7 @@
   [:div 
    [:h2 "Welcome to passa-paraula"]
    [:div {:id "score"} (str "score:" (:score @app-state))]
+   [:div {:id "time:"} (str "time:" (:time @app-state))]
    [board-component]
    [:div [:a {:href "#/about"} "go to about page"]]])
 
@@ -147,8 +149,14 @@
     (swap! app-state update-in [:pos] #(or first-greater-pos first-pos))))
 
 
-(defn end-game? []
+(defn no-more-letters-to-answer? []
   (every? #(or (= :failed %) (= :ok %)) (:status @app-state)))
+
+(defn no-more-time-left? []
+  (> 1 (:time @app-state)))
+
+(defn end-game? []
+  (or (no-more-letters-to-answer?) (no-more-time-left?)))
 
 (defn end-game []
   (secretary/dispatch! "/end"))
@@ -159,6 +167,12 @@
 
 (defn update-score []
   (swap! app-state update-in [:score] score))
+
+(defn update-time []
+  (swap! app-state update-in [:time] dec)
+  (js/setTimeout update-time 1000)
+  (when (end-game?)
+    (end-game)))
 
 (defn handle-letter [letter-id status]
   (do
@@ -176,9 +190,13 @@
       107 (handle-letter (cur-letter-id) :failed)
       (.log js/console (str "key pressed not valid" key)))))
  
-(defn hook-keyboard-listener
+(defn hook-keyboard-listener!
   []
    (.addEventListener js/window "keypress" handle-keys))
+
+
+(defn hook-clock-update! []
+  (js/setTimeout update-time 1000))
 
 ;; -------------------------
 ;; Initialize app
@@ -189,5 +207,6 @@
 (defn init! []
   (reset-state!)
   (hook-browser-navigation!)
-  (hook-keyboard-listener)
+  (hook-keyboard-listener!)
+  (hook-clock-update!)
   (mount-root))
