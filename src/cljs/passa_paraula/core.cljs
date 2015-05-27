@@ -70,8 +70,8 @@
 (defn build-circles
   []
   (let [get-circle (fn [x] {
-                            :x (Math/round (+ center-x (* radius (Math/cos (/ (* Math/PI 2 x) num-letters)))))
-                            :y (Math/round (+ center-y (* radius (Math/sin (/ (* Math/PI 2 x) num-letters)))))
+                            :x (Math/round (+ center-x (* radius  (Math/cos (-  (/ (* Math/PI 2 x) num-letters) (/ Math/PI 2))))))
+                            :y (Math/round (+ center-y (* radius  (Math/sin (-  (/ (* Math/PI 2 x) num-letters) (/ Math/PI 2))))))
                             :pos x
                             :letter (get letters x)})]
        (map get-circle (range num-letters))))
