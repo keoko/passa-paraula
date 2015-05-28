@@ -1,13 +1,7 @@
 (ns passa-paraula.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
-              [goog.events :as events]
-              [goog.history.EventType :as EventType])
-    (:import goog.History))
-
- 
-
+              [passa-paraula.navigation :as nav]))
 ;; -------------------------
 ;; config
 (def center-x 150)
@@ -106,33 +100,6 @@
                           (secretary/dispatch! "/"))} 
           "play again!"]]])
 
-(defn current-page []
-  [:div [(session/get :current-page)]])
-
-;; -------------------------
-;; Routes
-(secretary/set-config! :prefix "#")
-
-(secretary/defroute "/" []
-  (session/put! :current-page #'home-page))
-
-(secretary/defroute "/about" []
-  (session/put! :current-page #'about-page))
-
-(secretary/defroute "/end" []
-  (session/put! :current-page #'end-page))
-
-;; -------------------------
-;; History
-;; must be called after routes have been defined
-(defn hook-browser-navigation! []
-  (doto (History.)
-    (events/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token event))))
-    (.setEnabled true)))
-
 
 (defn change-letter-status [letter-id status]
   (swap! app-state update-in [:status letter-id] (fn [_] status)))
@@ -201,12 +168,12 @@
 ;; -------------------------
 ;; Initialize app
 (defn mount-root []
-  (reagent/render [current-page] (.getElementById js/document "app")))
+  (reagent/render [nav/current-page] (.getElementById js/document "app")))
 
 
 (defn init! []
   (reset-state!)
-  (hook-browser-navigation!)
+  (nav/hook-browser-navigation!)
   (hook-keyboard-listener!)
   (hook-clock-update!)
   (mount-root))
