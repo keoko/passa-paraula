@@ -10,27 +10,3 @@
 
 ;; -------------------------
 ;; Routes
-(secretary/set-config! :prefix "#")
-
-(defn current-page []
-  [:div [(session/get :current-page)]])
-
-(secretary/defroute "/" []
-  (session/put! :current-page #'home-page))
-
-(secretary/defroute "/about" []
-  (session/put! :current-page #'about-page))
-
-(secretary/defroute "/end" []
-  (session/put! :current-page #'end-page))
-
-;; -------------------------
-;; History
-;; must be called after routes have been defined
-(defn hook-browser-navigation! []
-  (doto (History.)
-    (events/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token event))))
-    (.setEnabled true)))
