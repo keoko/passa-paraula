@@ -1,13 +1,12 @@
 # passa-paraula
 
 ## TODO
-- fluid positioning based on window size
 - play/replay button
 - pause timer
+- fluid positioning based on window size
 - format time in minutes:seconds
 - move score and timer to the center 
-- remove web server dependency
-
+- remove end page and just show the number
 
 
 ## NICE TO HAVE
@@ -22,6 +21,7 @@
 
 
 ## DONE
+- remove web server dependency
 - circle in CSS3
 - CSS circles
 - colours

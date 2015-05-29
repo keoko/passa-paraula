@@ -2,11 +2,14 @@
   (:require [passa-paraula.game :as game]))
 
 
-(.log js/console  (.-innerWidth js/window))  
+(.log js/console  "sdfsdaf")  
 
  
 #_(def center-x 500)
 #_(def center-y 500)
+
+(def window-width (.-innerWidth js/window))
+(def window-height (.-innerHeight js/window))
 
 (def center-x (/ (.-innerWidth js/window) 2))
 (def center-y (/ (.-innerHeight js/window) 2))
@@ -87,13 +90,25 @@
    (for [circle (build-circles)]
      [svg-letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])])
 
+
+(defn format-time [t]
+  (let [minutes (quot t 60)
+        seconds (rem t 60)]
+    (str
+     (if (> 10 minutes) (str "0" minutes) minutes)
+     ":"
+     (if (> 10 seconds) (str "0" seconds) seconds))))
+
 (defn home-page []
   [:div 
-   [:h2 "Welcome to passa-paraula"]
-   [:div {:id "score"} (str "score:" (game/get-score))]
-   [:div {:id "time:"} (str "time:" (game/get-time))]
-   [board-component]
-   [:div [:a {:href "#/about"} "go to about page"]]])
+   [:div {:id "score"
+          :style {:position "absolute" 
+                  :font-size "100px"
+                  :top (str (/  window-height 2) "px")
+                  :left (str (/ window-width 2) "px")}} 
+    (game/get-score)]
+   [:div {:id "time:"} (format-time (game/get-time))]
+   [board-component]]) 
 
 
 (defn about-page []
