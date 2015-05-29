@@ -1,28 +1,34 @@
 # passa-paraula
 
 ## TODO
-- format time in minutes:seconds
-- refactor code (UI logic, game logic)
-- circle in CSS3
-- clean up README (install section, example, etc.)
-- how to play page (letters) or just some div with all keys used
+- fluid positioning based on window size
+- play/replay button
 - pause timer
+- format time in minutes:seconds
+- move score and timer to the center 
+- remove web server dependency
+
+
+
+## NICE TO HAVE
 - team name
-
-
-## NICE TO HAVE
-- letter positioning inside the circle
-- positioning the big circle in the middle of the window
-- text positioning & font
-- select letters set
-- responsive design
 - bootstrap
-- CSS circles
-- colours
+- responsive design
+- "how to play" page (letters) or just some div with all keys used
+- clean up README (install section, example, etc.)
+- re-frame article
 - timer & score on their own component
 
 
+
 ## DONE
+- circle in CSS3
+- CSS circles
+- colours
+- select letters set
+- letter positioning inside the circle
+- text positioning & font
+- refactor code (UI logic, game logic)
 - circles
 - circles + letters
 - reagent integration
@@ -39,9 +45,6 @@
 - timer
 - A circle starts from left, not up
 
-
-
-## NICE TO HAVE
 
 ## Emacs & others
 - autocomplete
