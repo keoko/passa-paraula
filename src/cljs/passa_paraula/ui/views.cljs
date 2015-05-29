@@ -1,19 +1,30 @@
 (ns passa-paraula.ui.views
   (:require [passa-paraula.game :as game]))
 
-(def center-x 500)
-(def center-y 500)
-(def radius 400)
-(def circle-radius "100px")
+
+(.log js/console  (.-innerWidth js/window))  
+
+ 
+#_(def center-x 500)
+#_(def center-y 500)
+
+(def center-x (/ (.-innerWidth js/window) 2))
+(def center-y (/ (.-innerHeight js/window) 2))
+
+(def radius (/ (.-innerWidth js/window) 4.5))
+(def circle-radius (/ (.-innerWidth js/window) 20))
 
 (def status-colors {:ok "green"
                     :failed "red"
                     :pass "orange"
                     :init "blue"}) 
 
+(def circle-line-height (str circle-radius "px"))
+
 
 (def letter-color "black")
 (def letter-width "1")
+
 (def highlight-letter-color "orange")
 (def highlight-letter-width "5")
   
@@ -46,9 +57,9 @@
                              :width circle-radius
                              :height circle-radius
                              :border-radius "50%"
-                             :font-size "50px"
+                             :font-size (/ circle-radius 2)
                              :color "#fff"
-                             :line-height "100px"
+                             :line-height circle-line-height
                              :text-align "center"
                              :background (get-letter-color pos)}} 
                letter])
