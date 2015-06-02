@@ -100,14 +100,14 @@
      (if (> 10 seconds) (str "0" seconds) seconds))))
 
 (defn home-page []
-  [:div 
-   [:div {:id "score"
-          :style {:position "absolute" 
-                  :font-size "100px"
+  [:div
+   [:div {:style {:position "absolute"
                   :top (str (/  window-height 2) "px")
                   :left (str (/ window-width 2) "px")}} 
-    (game/get-score)]
-   [:div {:id "time:"} (format-time (game/get-time))]
+    [:div {:id "score"
+           :style {:font-size "100px" :display "inline-block"}} 
+     (game/get-score)]
+    [:div {:id "time:" :style {:display "inline-block"}} (format-time (game/get-time))]]
    [board-component]]) 
 
 

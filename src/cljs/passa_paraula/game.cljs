@@ -8,6 +8,7 @@
 
 (def starting-state {:pos 0
                      :score 0
+                     :timer-status :pause
                      :time 1000
                      :status (vec (take num-letters (repeat :init)))})
 
@@ -51,7 +52,8 @@
   (swap! app-state update-in [:score] score))
 
 (defn update-time []
-  (swap! app-state update-in [:time] dec))
+  (when (not= :pause (:timer-status @app-state))
+    (swap! app-state update-in [:time] dec)))
 
 (defn get-letter-status [pos]
   (get-in @app-state [:status pos]))
@@ -61,3 +63,10 @@
 
 (defn get-time []
   (:time @app-state))
+
+(defn toggle-timer-status []
+  (let [toggle-it (fn [ts] (if (= :pause ts) :run :pause))]
+    (swap! app-state update-in [:timer-status] toggle-it)))
+
+(defn game-paused? []
+  (= :pause (:timer-status @app-state)))

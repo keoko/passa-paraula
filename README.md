@@ -3,10 +3,11 @@
 ## TODO
 - play/replay button
 - pause timer
-- fluid positioning based on window size
-- format time in minutes:seconds
-- move score and timer to the center 
+- fluid positioning based on window size as ui state
 - remove end page and just show the number
+- highlight current letter
+- legend
+- show game-status: (start game, end game, pause game)
 
 
 ## NICE TO HAVE
@@ -19,8 +20,9 @@
 - timer & score on their own component
 
 
-
 ## DONE
+- format time in minutes:seconds
+- move score and timer to the center 
 - remove web server dependency
 - circle in CSS3
 - CSS circles

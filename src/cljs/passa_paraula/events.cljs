@@ -4,7 +4,7 @@
 
 
 (defn handle-letter [letter-id status]
-  (do
+  (when (not (game/game-paused?))
     (game/change-letter-status letter-id status)
     (game/update-score)
     (game/jump-next-letter)
@@ -17,6 +17,7 @@
       111 (handle-letter (game/cur-letter-id) :ok)
       112 (handle-letter (game/cur-letter-id) :pass)
       107 (handle-letter (game/cur-letter-id) :failed)
+      115 (game/toggle-timer-status)
       (.log js/console (str "key pressed not valid" key)))))
  
 (defn hook-keyboard-listener! []
