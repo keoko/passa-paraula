@@ -1,16 +1,14 @@
 # passa-paraula
 
 ## TODO
-- play/replay button
-- pause timer
-- fluid positioning based on window size as ui state
 - remove end page and just show the number
-- highlight current letter
-- legend
 - show game-status: (start game, end game, pause game)
+- fluid positioning based on window size as ui state
+- legend
 
 
 ## NICE TO HAVE
+- highlight current letter
 - team name
 - bootstrap
 - responsive design
@@ -21,6 +19,8 @@
 
 
 ## DONE
+- play/replay button
+- pause timer
 - format time in minutes:seconds
 - move score and timer to the center 
 - remove web server dependency

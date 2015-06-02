@@ -2,9 +2,6 @@
   (:require [passa-paraula.game :as game]))
 
 
-(.log js/console  "sdfsdaf")  
-
- 
 #_(def center-x 500)
 #_(def center-y 500)
 
@@ -25,6 +22,7 @@
 (def circle-line-height (str circle-radius "px"))
 
 
+(def cur-letter-color "purple")
 (def letter-color "black")
 (def letter-width "1")
 
@@ -49,8 +47,11 @@
    [:Text {:dx "-5" :dy "5"} letter]])
 
 
-(defn get-letter-color [pos]
-  (get status-colors (game/get-letter-status pos)))
+(defn set-letter-color [pos]
+  (if (= pos (game/cur-letter-id))
+    cur-letter-color
+    (get status-colors (game/get-letter-status pos))))
+
 
 (defn letter-circle-component [x y pos letter]
   ^{:key pos} [:div {:id pos
@@ -64,7 +65,7 @@
                              :color "#fff"
                              :line-height circle-line-height
                              :text-align "center"
-                             :background (get-letter-color pos)}} 
+                             :background (set-letter-color pos)}} 
                letter])
 
 
