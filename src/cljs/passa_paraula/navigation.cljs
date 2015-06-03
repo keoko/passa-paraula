@@ -10,11 +10,6 @@
 
 
 
-
-(defn end-game []
-  (secretary/dispatch! "/end"))
-
-
 (secretary/set-config! :prefix "#")
 
 (defn current-page []

@@ -80,10 +80,32 @@
 
 
 
+
+(defn start-dialog []
+  (let [show-dialog (if (game/game-in-start?) "block" "none")]
+    [:div {:style {:display show-dialog}}
+     "start dialog"]))
+
+(defn end-dialog []
+  (let [show-dialog (if (game/game-ended?) "block" "none")]
+    [:div {:style {:display show-dialog}}
+     "end dialog"]))
+
+(defn pause-dialog []
+  (let [show-dialog (if (game/game-paused?) "block" "none")]
+    [:div {:style {:display show-dialog}}
+     "pause dialog"]))
+
+
+
 (defn board-component []
   [:div
-   (for [circle (build-circles)]
-     [letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])])
+   [:div
+    (for [circle (build-circles)]
+      [letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])]
+   [start-dialog]
+   [end-dialog]
+   [pause-dialog]])
 
 
 (defn svg-board-component []
@@ -115,12 +137,3 @@
 (defn about-page []
   [:div [:h2 "About passa-paraula"]
    [:div [:a {:href "#/"} "go to the home page"]]])
-
-(defn end-page []
-  [:div [:h2 "The End"]
-   [:div (str "score:" (game/get-score))]
-   [:div [:a {:href "#/" 
-              :on-click (fn [e] 
-                          (game/reset-state!)
-                          #_(secretary/dispatch! "/"))} 
-          "play again!"]]])
