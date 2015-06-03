@@ -1,14 +1,13 @@
 # passa-paraula
 
 ## TODO
-- remove end page and just show the number
-- show game-status: (start game, end game, pause game)
+- dialogs
 - fluid positioning based on window size as ui state
-- legend
 
 
 ## NICE TO HAVE
-- highlight current letter
+- remove navigation and about page
+- cljs.tests
 - team name
 - bootstrap
 - responsive design
@@ -19,6 +18,10 @@
 
 
 ## DONE
+- legend
+- show game-status: (start game, end game, pause game)
+- remove end page and just show the number
+- highlight current letter
 - play/replay button
 - pause timer
 - format time in minutes:seconds

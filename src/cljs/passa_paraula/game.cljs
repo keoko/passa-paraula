@@ -9,7 +9,7 @@
 (def starting-state {:pos 0
                      :score 0
                      :state :start
-                     :time 1000
+                     :time (* 60 10)
                      :status (vec (take num-letters (repeat :init)))})
 
 (def app-state (atom starting-state))

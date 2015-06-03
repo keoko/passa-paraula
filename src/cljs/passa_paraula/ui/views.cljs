@@ -79,22 +79,32 @@
        (map get-circle (range game/num-letters))))
 
 
-
+(defn legend-component []
+  [:div
+   [:table.table
+    [:tr [:td "s"] [:td "start/pause/restart game"]]
+    [:tr [:td "o"] [:td "letter OK"]]
+    [:tr [:td "p"] [:td "letter PASSED"]]
+    [:tr [:td "k"] [:td "letter KO"]]]])
 
 (defn start-dialog []
   (let [show-dialog (if (game/game-in-start?) "block" "none")]
-    [:div {:style {:display show-dialog}}
-     "start dialog"]))
+    [:div.panel.panel-primary {:style {:display show-dialog}}
+     [:div.panel-heading "press key 'S' to play"]
+     [:div.panel-body
+      [legend-component]]]))
 
 (defn end-dialog []
   (let [show-dialog (if (game/game-ended?) "block" "none")]
     [:div {:style {:display show-dialog}}
-     "end dialog"]))
+     "press key 'S' to play again"
+     [legend-component]]))
 
 (defn pause-dialog []
   (let [show-dialog (if (game/game-paused?) "block" "none")]
     [:div {:style {:display show-dialog}}
-     "pause dialog"]))
+     "press key 'S' to continue"
+     [legend-component]]))
 
 
 
@@ -137,3 +147,4 @@
 (defn about-page []
   [:div [:h2 "About passa-paraula"]
    [:div [:a {:href "#/"} "go to the home page"]]])
+
