@@ -15,27 +15,6 @@
 (def letter-color "black")
 (def letter-width "1")
 
-(def highlight-letter-color "orange")
-(def highlight-letter-width "5")
-  
-
-
-(defn svg-letter-circle-component
-  [x y pos letter]
-  [:g {:transform (str "translate(" x "," y ")")}
-   ^{:key pos} 
-   [:circle {:id pos 
-             :r (:circle-radius @ui-state) 
-             :stroke (if (= pos (game/cur-letter-id)) 
-                       highlight-letter-color
-                       letter-color)
-             :strokeWidth (if (= pos (game/cur-letter-id)) 
-                             highlight-letter-width 
-                             letter-width)
-             :fill (get status-colors (game/get-letter-status pos)) }]
-   [:text {:dx "-5" :dy "5"} letter]])
-
-
 (defn set-letter-color [pos]
   (if (= pos (game/cur-letter-id))
     cur-letter-color
@@ -74,12 +53,6 @@
    [:div
     (for [circle (build-circles)]
       [letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])]])
-
-
-(defn svg-board-component []
-  [:svg {:height "500" :width "500"}
-   (for [circle (build-circles)]
-     [svg-letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])])
 
 
 (defn format-time [t]
