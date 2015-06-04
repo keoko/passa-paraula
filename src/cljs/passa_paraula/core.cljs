@@ -8,7 +8,9 @@
 
 (defn init! []
   (game/reset-state!)
+  (view/recalculate-window-center!)
   (nav/hook-browser-navigation!)
   (events/hook-keyboard-listener!)
   (events/hook-clock-update!)
+  (events/hook-window-resize!)
   (nav/mount-root))

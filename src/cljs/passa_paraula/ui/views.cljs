@@ -1,25 +1,14 @@
 (ns passa-paraula.ui.views
-  (:require [passa-paraula.game :as game]))
+  (:require [passa-paraula.game :as game]
+            [reagent.core :as reagent :refer [atom]]))
 
 
-#_(def center-x 500)
-#_(def center-y 500)
-
-(def window-width (.-innerWidth js/window))
-(def window-height (.-innerHeight js/window))
-
-(def center-x (/ (.-innerWidth js/window) 2))
-(def center-y (/ (.-innerHeight js/window) 2))
-
-(def radius (/ (.-innerWidth js/window) 4.5))
-(def circle-radius (/ (.-innerWidth js/window) 20))
+(def ui-state (atom {})) 
 
 (def status-colors {:ok "green"
                     :failed "red"
                     :pass "orange"
                     :init "blue"}) 
-
-(def circle-line-height (str circle-radius "px"))
 
 
 (def cur-letter-color "purple")
@@ -36,7 +25,7 @@
   [:g {:transform (str "translate(" x "," y ")")}
    ^{:key pos} 
    [:circle {:id pos 
-             :r circle-radius 
+             :r (:circle-radius @ui-state) 
              :stroke (if (= pos (game/cur-letter-id)) 
                        highlight-letter-color
                        letter-color)
@@ -56,14 +45,14 @@
 (defn letter-circle-component [x y pos letter]
   ^{:key pos} [:div {:id pos
                      :style {:position "absolute"
-                             :top y
-                             :left x
-                             :width circle-radius
-                             :height circle-radius
+                             :top (Math/round (+ (:center-y @ui-state) y))
+                             :left  (Math/round (+ (:center-x @ui-state) x))
+                             :width (:circle-radius @ui-state)
+                             :height (:circle-radius @ui-state)
                              :border-radius "50%"
-                             :font-size (/ circle-radius 2)
+                             :font-size (/ (:circle-radius @ui-state) 2)
                              :color "#fff"
-                             :line-height circle-line-height
+                             :line-height (str (:circle-radius @ui-state) "px")
                              :text-align "center"
                              :background (set-letter-color pos)}} 
                letter])
@@ -72,8 +61,8 @@
 
 (defn build-circles []
   (let [get-circle (fn [x] {
-                            :x (Math/round (+ center-x (* radius  (Math/cos (-  (/ (* Math/PI 2 x) game/num-letters) (/ Math/PI 2))))))
-                            :y (Math/round (+ center-y (* radius  (Math/sin (-  (/ (* Math/PI 2 x) game/num-letters) (/ Math/PI 2))))))
+                            :x (* (:radius @ui-state)  (Math/cos (-  (/ (* Math/PI 2 x) game/num-letters) (/ Math/PI 2))))
+                            :y  (* (:radius @ui-state)  (Math/sin (-  (/ (* Math/PI 2 x) game/num-letters) (/ Math/PI 2))))
                             :pos x
                             :letter (get game/letters x)})]
        (map get-circle (range game/num-letters))))
@@ -107,24 +96,41 @@
                   :pause "Press key 'S' to continue"}
         message (get messages (game/get-state))
         show (if (game/game-in-run?) "block" "none")]
-    [:blink {:id "instructions" :display show} message]))
+    [:blink {:id "instructions" 
+             :display show 
+             :style {:display "block"
+                     :text-align "center"}} message]))
 
 (defn home-page []
-  [:div
-   [:div {:style {:position "absolute"
-                  :top (str (/  window-height 2) "px")
-                  :left (str (/ window-width 2) "px")}} 
-    [:div {:id "score"
-           :style {:font-size "100px" :display "inline-block"}} 
-     (game/get-score)]
-    [:div {:id "time" 
-           :style {:display "inline-block"}} 
-     (format-time (game/get-time))]
-    [message-component]]
-   [board-component]]) 
+  (let [div-top  (- (:center-y @ui-state) (/ (:radius @ui-state) 3))
+        div-left (- (:center-x @ui-state) (/ (:radius @ui-state) 3))]
+    [:div
+     [:div {:style {:position "absolute"
+                    :top (str div-top "px")
+                    :left (str div-left "px")
+                    :width (str (:radius ui-state) "px")}} 
+      [:div {:id "score"
+             :style {:display "inline-block"
+                     :text-align "center"
+                     :font-size "100px"}} 
+       (game/get-score)]
+      [:div {:id "time" 
+             :style {:display "inline-block"
+                     :text-align "center"}} 
+       (format-time (game/get-time))]
+      [message-component]]
+     [board-component]])) 
 
 
 (defn about-page []
   [:div [:h2 "About passa-paraula"]
    [:div [:a {:href "#/"} "go to the home page"]]])
 
+
+(defn recalculate-window-center! []
+  (let [width  (.-innerWidth js/window)
+        height (.-innerHeight js/window)]
+    (reset! ui-state {:center-x (/ width 2)
+                      :center-y (/ height 2)
+                      :circle-radius (/ width 20)
+                      :radius (/ width 4.5)})))

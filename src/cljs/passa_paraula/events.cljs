@@ -1,6 +1,7 @@
 (ns passa-paraula.events
   (:require [passa-paraula.game :as game]
-            [passa-paraula.navigation :as nav]))
+            [passa-paraula.navigation :as nav]
+            [passa-paraula.ui.views :as view]))
 
 
 (defn handle-letter [letter-id status]
@@ -32,4 +33,7 @@
 
 (defn hook-clock-update! []
   (js/setTimeout tick 1000))
+
+(defn hook-window-resize! []
+  (.addEventListener js/window "resize" view/recalculate-window-center!))
 

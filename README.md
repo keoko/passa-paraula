@@ -1,7 +1,8 @@
 # passa-paraula
 
 ## TODO
-- dialogs
+- position score & timer
+- control start/re-start game 
 - fluid positioning based on window size as ui state
 
 
