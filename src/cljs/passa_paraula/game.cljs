@@ -70,7 +70,9 @@
                      :start :run
                      :end :start}
         toggle-it (fn [ts] (get next-status ts))]
-    (swap! app-state update-in [:state] toggle-it)))
+    (swap! app-state update-in [:state] toggle-it)
+    (when (game-in-start?)
+      (reset-state!))))
 
 (defn game-paused? []
   (= :pause (:state @app-state)))

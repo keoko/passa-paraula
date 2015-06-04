@@ -5,7 +5,7 @@
 
 
 (defn handle-letter [letter-id status]
-  (when (not (game/game-paused?))
+  (when (game/game-in-run?)
     (game/change-letter-status letter-id status)
     (game/update-score)
     (game/jump-next-letter)

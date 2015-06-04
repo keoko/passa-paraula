@@ -1,9 +1,9 @@
 # passa-paraula
 
 ## TODO
-- position score & timer
 - control start/re-start game 
-- fluid positioning based on window size as ui state
+- remove navigation
+- remove svg
 
 
 ## NICE TO HAVE
@@ -19,6 +19,8 @@
 
 
 ## DONE
+- position score & timer
+- fluid positioning based on window size as ui state
 - legend
 - show game-status: (start game, end game, pause game)
 - remove end page and just show the number
