@@ -44,7 +44,7 @@
                              highlight-letter-width 
                              letter-width)
              :fill (get status-colors (game/get-letter-status pos)) }]
-   [:Text {:dx "-5" :dy "5"} letter]])
+   [:text {:dx "-5" :dy "5"} letter]])
 
 
 (defn set-letter-color [pos]
@@ -79,43 +79,12 @@
        (map get-circle (range game/num-letters))))
 
 
-(defn legend-component []
-  [:div
-   [:table.table
-    [:tr [:td "s"] [:td "start/pause/restart game"]]
-    [:tr [:td "o"] [:td "letter OK"]]
-    [:tr [:td "p"] [:td "letter PASSED"]]
-    [:tr [:td "k"] [:td "letter KO"]]]])
-
-(defn start-dialog []
-  (let [show-dialog (if (game/game-in-start?) "block" "none")]
-    [:div.panel.panel-primary {:style {:display show-dialog}}
-     [:div.panel-heading "press key 'S' to play"]
-     [:div.panel-body
-      [legend-component]]]))
-
-(defn end-dialog []
-  (let [show-dialog (if (game/game-ended?) "block" "none")]
-    [:div {:style {:display show-dialog}}
-     "press key 'S' to play again"
-     [legend-component]]))
-
-(defn pause-dialog []
-  (let [show-dialog (if (game/game-paused?) "block" "none")]
-    [:div {:style {:display show-dialog}}
-     "press key 'S' to continue"
-     [legend-component]]))
-
-
 
 (defn board-component []
   [:div
    [:div
     (for [circle (build-circles)]
-      [letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])]
-   [start-dialog]
-   [end-dialog]
-   [pause-dialog]])
+      [letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])]])
 
 
 (defn svg-board-component []
@@ -132,6 +101,14 @@
      ":"
      (if (> 10 seconds) (str "0" seconds) seconds))))
 
+(defn message-component []
+  (let [messages {:start "Press key 'S' to play"
+                  :end "Press key 'S' to play again"
+                  :pause "Press key 'S' to continue"}
+        message (get messages (game/get-state))
+        show (if (game/game-in-run?) "block" "none")]
+    [:blink {:id "instructions" :display show} message]))
+
 (defn home-page []
   [:div
    [:div {:style {:position "absolute"
@@ -140,7 +117,10 @@
     [:div {:id "score"
            :style {:font-size "100px" :display "inline-block"}} 
      (game/get-score)]
-    [:div {:id "time:" :style {:display "inline-block"}} (format-time (game/get-time))]]
+    [:div {:id "time" 
+           :style {:display "inline-block"}} 
+     (format-time (game/get-time))]
+    [message-component]]
    [board-component]]) 
 
 

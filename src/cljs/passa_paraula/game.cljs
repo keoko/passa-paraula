@@ -78,8 +78,15 @@
 (defn game-ended? []
   (= :end (:state @app-state)))
 
+(defn game-in-run? []
+  (= :run (:state @app-state)))
+
 (defn game-in-start? []
   (= :start (:state @app-state)))
 
 (defn end-game []
   (swap! app-state update-in [:state] (fn [_] :end)))
+
+
+(defn get-state []
+  (:state @app-state))

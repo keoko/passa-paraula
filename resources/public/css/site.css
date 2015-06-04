@@ -1,4 +1,9 @@
 body {
+    margin: 0 auto;
+}
+
+/*
+body {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
   max-width: 600px;
   margin: 0 auto;
@@ -8,6 +13,7 @@ body {
   color: #333;
   line-height: 1.5em;
 }
+*/
 
 h1, h2, h3 {
   color: #000;
@@ -31,4 +37,14 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+@-webkit-keyframes blink {
+  0%     { opacity: 0 } 50% { opacity: 0 }
+  50.01% { opacity: 1 } 100% { opacity: 1 }
+}
+ 
+blink {
+  -webkit-animation: blink 0.7s infinite linear alternate;
+  -webkit-font-smoothing: antialiased;
 }

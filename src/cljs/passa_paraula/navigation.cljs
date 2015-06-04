@@ -21,7 +21,7 @@
 (secretary/defroute "/about" []
   (session/put! :current-page #'view/about-page))
 
-(secretary/defroute "/end" []
+#_(secretary/defroute "/end" []
   (session/put! :current-page #'view/end-page))
 
 
