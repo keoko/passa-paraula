@@ -107,3 +107,6 @@
                       :center-y (/ height 2)
                       :circle-radius (/ width 20)
                       :radius (/ width 4.5)})))
+
+(defn mount-root []
+  (reagent/render [home-page] (.getElementById js/document "app")))
