@@ -1,16 +1,11 @@
 # passa-paraula
 
 ## TODO
-- control start/re-start game 
-- remove navigation
-- remove svg
-
+- bootstrap
 
 ## NICE TO HAVE
-- remove navigation and about page
 - cljs.tests
 - team name
-- bootstrap
 - responsive design
 - "how to play" page (letters) or just some div with all keys used
 - clean up README (install section, example, etc.)
@@ -19,6 +14,9 @@
 
 
 ## DONE
+- control start/re-start game 
+- remove navigation
+- remove svg
 - position score & timer
 - fluid positioning based on window size as ui state
 - legend

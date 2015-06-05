@@ -95,11 +95,6 @@
      [board-component]])) 
 
 
-(defn about-page []
-  [:div [:h2 "About passa-paraula"]
-   [:div [:a {:href "#/"} "go to the home page"]]])
-
-
 (defn recalculate-window-center! []
   (let [width  (.-innerWidth js/window)
         height (.-innerHeight js/window)]

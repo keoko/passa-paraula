@@ -1,6 +1,5 @@
 (ns passa-paraula.events
   (:require [passa-paraula.game :as game]
-            [passa-paraula.navigation :as nav]
             [passa-paraula.ui.views :as view]))
 
 
