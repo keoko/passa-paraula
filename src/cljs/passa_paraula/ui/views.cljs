@@ -49,8 +49,8 @@
 
 
 (defn board-component []
-  [:div
-   [:div
+  [:div.container
+   [:div.row
     (for [circle (build-circles)]
       [letter-circle-component (:x circle) (:y circle) (:pos circle) (:letter circle)])]])
 
@@ -63,35 +63,72 @@
      ":"
      (if (> 10 seconds) (str "0" seconds) seconds))))
 
-(defn message-component []
-  (let [messages {:start "Press key 'S' to play"
-                  :end "Press key 'S' to play again"
-                  :pause "Press key 'S' to continue"}
-        message (get messages (game/get-state))
-        show (if (game/game-in-run?) "block" "none")]
-    [:blink {:id "instructions" 
-             :display show 
-             :style {:display "block"
-                     :text-align "center"}} message]))
+
+(defn start-component []
+  [:span.glyphicon.glyphicon-play-circle 
+   {:aria-hidden "true"
+    :on-click game/toggle-status}])
+
+(defn end-component []
+  [:span.glyphicon.glyphicon-repeat 
+   {:aria-hidden "true"
+    :on-click game/toggle-status}])
+
+(defn pause-component []
+  [:span.glyphicon.glyphicon-pause 
+   {:aria-hidden "true"
+    :on-click game/toggle-status}])
+
+
+(defn run-component []
+  [:div
+   [:span.glyphicon.glyphicon-ok-sign 
+    {:aria-hidden "true"
+     :on-click (fn [_] (game/handle-letter (game/cur-letter-id) :ok))}]
+   [:span.glyphicon.glyphicon-remove-sign 
+    {:aria-hidden "true"
+     :on-click (fn [_] (game/handle-letter (game/cur-letter-id) :failed))}]
+   [:span.glyphicon.glyphicon-question-sign 
+    {:aria-hidden "true"
+     :on-click (fn [_] (game/handle-letter (game/cur-letter-id) :pass))}]])
+
+(defn buttons-component []
+  (let [buttons-by-state {:start (start-component)
+                  :end (end-component)
+                  :pause (pause-component)
+                  :run (run-component)}
+        buttons (get buttons-by-state (game/get-state))]
+    [:div 
+     {:id "buttons" 
+      :style {:display "inline-block"
+              :text-align "center"
+              :font-size "100px"}} buttons]))
+
+(defn score-component []
+  [:div {:id "score"
+         :style {:display "inline-block"
+                 :text-align "center"
+                 :font-size "100px"}} 
+   (game/get-score)])
+
+
+(defn timer-component []
+  [:div {:id "time" 
+         :style {:display "inline-block"
+                 :text-align "center"}} 
+   (format-time (game/get-time))])
 
 (defn home-page []
-  (let [div-top  (- (:center-y @ui-state) (/ (:radius @ui-state) 3))
-        div-left (- (:center-x @ui-state) (/ (:radius @ui-state) 3))]
-    [:div
-     [:div {:style {:position "absolute"
-                    :top (str div-top "px")
-                    :left (str div-left "px")
-                    :width (str (:radius ui-state) "px")}} 
-      [:div {:id "score"
-             :style {:display "inline-block"
-                     :text-align "center"
-                     :font-size "100px"}} 
-       (game/get-score)]
-      [:div {:id "time" 
-             :style {:display "inline-block"
-                     :text-align "center"}} 
-       (format-time (game/get-time))]
-      [message-component]]
+  (let [div-top  (:center-y @ui-state)
+        div-left (:center-x @ui-state)]
+    [:div.container
+     [:div.row 
+      [:div.container  {:style {:position "absolute"
+                                :top (str div-top "px")
+                                :left (str div-left "px")
+                                :width (str (:radius ui-state) "px")}}
+       [:div.row 
+        [buttons-component]]]]
      [board-component]])) 
 
 

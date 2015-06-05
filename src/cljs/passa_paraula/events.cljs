@@ -3,20 +3,13 @@
             [passa-paraula.ui.views :as view]))
 
 
-(defn handle-letter [letter-id status]
-  (when (game/game-in-run?)
-    (game/change-letter-status letter-id status)
-    (game/update-score)
-    (game/jump-next-letter)
-    (when (game/end-game?)
-      (game/end-game))))
 
 (defn handle-keys [event]
   (when-let [key (.-charCode event)]
     (case key
-      111 (handle-letter (game/cur-letter-id) :ok)
-      112 (handle-letter (game/cur-letter-id) :pass)
-      107 (handle-letter (game/cur-letter-id) :failed)
+      111 (game/handle-letter (game/cur-letter-id) :ok)
+      112 (game/handle-letter (game/cur-letter-id) :pass)
+      107 (game/handle-letter (game/cur-letter-id) :failed)
       115 (game/toggle-status)
       (.log js/console (str "key pressed not valid" key)))))
  

@@ -92,3 +92,12 @@
 
 (defn get-state []
   (:state @app-state))
+
+
+(defn handle-letter [letter-id status]
+  (when (game-in-run?)
+    (change-letter-status letter-id status)
+    (update-score)
+    (jump-next-letter)
+    (when (end-game?)
+      (end-game))))

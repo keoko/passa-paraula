@@ -1,7 +1,8 @@
 # passa-paraula
 
 ## TODO
-- bootstrap
+- score/timer in a top navbar
+
 
 ## NICE TO HAVE
 - cljs.tests
@@ -14,6 +15,8 @@
 
 
 ## DONE
+- glyphicons as buttons
+- bootstrap
 - control start/re-start game 
 - remove navigation
 - remove svg
