@@ -105,23 +105,24 @@
               :font-size "100px"}} buttons]))
 
 (defn score-component []
-  [:div {:id "score"
-         :style {:display "inline-block"
-                 :text-align "center"
-                 :font-size "100px"}} 
-   (game/get-score)])
+  [:p.navbar-text {:id "score"} 
+   (str "score:" (game/get-score))])
 
 
 (defn timer-component []
-  [:div {:id "time" 
-         :style {:display "inline-block"
-                 :text-align "center"}} 
-   (format-time (game/get-time))])
+  [:p.navbar-text {:id "time"} 
+   (str "timer:" (format-time (game/get-time)))])
 
 (defn home-page []
   (let [div-top  (:center-y @ui-state)
         div-left (:center-x @ui-state)]
     [:div.container
+     [:nav.navbar.navbar-default
+      [:div.container-fluid
+       [:div.navbar-header
+        [:a.navbar-brand {:href "#"} "passa-paraula"]
+        [score-component]
+        [timer-component]]]]
      [:div.row 
       [:div.container  {:style {:position "absolute"
                                 :top (str div-top "px")
