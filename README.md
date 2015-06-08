@@ -1,10 +1,11 @@
 # passa-paraula
 
 ## TODO
-- score/timer in a top navbar
+- nice navbar
 
 
 ## NICE TO HAVE
+- center buttons
 - cljs.tests
 - team name
 - responsive design
@@ -15,6 +16,7 @@
 
 
 ## DONE
+- score/timer in a top navbar
 - glyphicons as buttons
 - bootstrap
 - control start/re-start game 

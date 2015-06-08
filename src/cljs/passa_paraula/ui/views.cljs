@@ -82,14 +82,17 @@
 
 (defn run-component []
   [:div
-   [:span.glyphicon.glyphicon-ok-sign 
+   [:span.glyphicon.glyphicon-ok
     {:aria-hidden "true"
+     :style {:color (:ok status-colors)}
      :on-click (fn [_] (game/handle-letter (game/cur-letter-id) :ok))}]
-   [:span.glyphicon.glyphicon-remove-sign 
+   [:span.glyphicon.glyphicon-remove
     {:aria-hidden "true"
+     :style {:color (:failed status-colors)}
      :on-click (fn [_] (game/handle-letter (game/cur-letter-id) :failed))}]
    [:span.glyphicon.glyphicon-question-sign 
     {:aria-hidden "true"
+     :style {:color (:pass status-colors)}
      :on-click (fn [_] (game/handle-letter (game/cur-letter-id) :pass))}]])
 
 (defn buttons-component []
@@ -97,12 +100,23 @@
                   :end (end-component)
                   :pause (pause-component)
                   :run (run-component)}
-        buttons (get buttons-by-state (game/get-state))]
+        buttons (get buttons-by-state (game/get-state))
+        left-factor-by-state {:start 1
+                              :end 1
+                              :pause 1
+                              :run 5}
+        div-top  (- (:center-y @ui-state) (/ (:circle-radius @ui-state) 2))
+        div-left (- (:center-x @ui-state) (* (get left-factor-by-state (game/get-state)) (/(:circle-radius @ui-state) 2)))
+]
     [:div 
      {:id "buttons" 
-      :style {:display "inline-block"
+      :style {:position "absolute"
+              :top (str div-top "px")
+              :left (str div-left "px")
+              :width (str (:radius ui-state) "px")
               :text-align "center"
-              :font-size "100px"}} buttons]))
+              :color (:init status-colors)
+              :font-size (str (* 2 (:circle-radius @ui-state)))}} buttons]))
 
 (defn score-component []
   [:p.navbar-text {:id "score"} 
@@ -114,23 +128,16 @@
    (str "timer:" (format-time (game/get-time)))])
 
 (defn home-page []
-  (let [div-top  (:center-y @ui-state)
-        div-left (:center-x @ui-state)]
-    [:div.container
-     [:nav.navbar.navbar-default
-      [:div.container-fluid
-       [:div.navbar-header
-        [:a.navbar-brand {:href "#"} "passa-paraula"]
-        [score-component]
-        [timer-component]]]]
-     [:div.row 
-      [:div.container  {:style {:position "absolute"
-                                :top (str div-top "px")
-                                :left (str div-left "px")
-                                :width (str (:radius ui-state) "px")}}
-       [:div.row 
-        [buttons-component]]]]
-     [board-component]])) 
+  [:div.container
+   [:nav.navbar.navbar-default
+    [:div.container-fluid
+     [:div.navbar-header
+      [:a.navbar-brand {:href "#"} "passa-paraula"]
+      [score-component]
+      [timer-component]]]]
+   [:div.row 
+    [buttons-component]]
+   [board-component]]) 
 
 
 (defn recalculate-window-center! []
