@@ -8,7 +8,7 @@
 (def status-colors {:ok "green"
                     :failed "red"
                     :pass "orange"
-                    :init "blue"}) 
+                    :init "black"}) 
 
 
 (def cur-letter-color "purple")
@@ -119,24 +119,22 @@
               :font-size (str (* 2 (:circle-radius @ui-state)))}} buttons]))
 
 (defn score-component []
-  [:p.navbar-text {:id "score"} 
-   (str "score:" (game/get-score))])
+  [:span.navbar-text.pull-left {:id "score"} 
+    " score " [:span.badge (game/get-score)]])
 
 
 (defn timer-component []
-  [:p.navbar-text {:id "time"} 
-   (str "timer:" (format-time (game/get-time)))])
+  [:span.navbar-text.pull-right {:id "time"} 
+   "timer " [:span.badge (format-time (game/get-time))]])
 
 (defn home-page []
-  [:div.container
-   [:nav.navbar.navbar-default
-    [:div.container-fluid
-     [:div.navbar-header
-      [:a.navbar-brand {:href "#"} "passa-paraula"]
-      [score-component]
-      [timer-component]]]]
-   [:div.row 
-    [buttons-component]]
+  [:div
+   [:nav.navbar.navbar-fixed-top.navbar-inverse
+    [:a.navbar-brand {:style {:color "white"}} "passa-paraula"]    
+    [:div.navbar-header
+     [score-component]
+     [timer-component]]]
+   [buttons-component]
    [board-component]]) 
 
 

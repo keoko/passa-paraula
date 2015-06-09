@@ -4,8 +4,8 @@
 - nice navbar
 
 
+
 ## NICE TO HAVE
-- center buttons
 - cljs.tests
 - team name
 - responsive design
@@ -16,6 +16,7 @@
 
 
 ## DONE
+- center buttons
 - score/timer in a top navbar
 - glyphicons as buttons
 - bootstrap

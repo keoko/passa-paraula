@@ -1,5 +1,6 @@
 body {
     margin: 0 auto;
+    padding-bottom: 70px;
 }
 
 /*
@@ -47,4 +48,14 @@ a:hover {
 blink {
   -webkit-animation: blink 0.7s infinite linear alternate;
   -webkit-font-smoothing: antialiased;
+}
+
+
+.navbar-brand
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
 }
