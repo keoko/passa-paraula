@@ -21,7 +21,7 @@
      (include-js "js/app.js")]]))
 
 (defroutes routes
-  (GET "/" [] (file-response "index.html" {:root "resources/public"}))
+  (GET "/" [] (redirect "/index.html"))
   (resources "/")
   (not-found "Not Found"))
 
