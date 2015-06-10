@@ -2,6 +2,7 @@
   (:require [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+            [ring.util.response :refer [redirect file-response]]
             [hiccup.core :refer [html]]
             [hiccup.page :refer [include-js include-css]]
             [prone.middleware :refer [wrap-exceptions]]
@@ -20,7 +21,7 @@
      (include-js "js/app.js")]]))
 
 (defroutes routes
-  (GET "/" [] home-page)
+  (GET "/" [] (file-response "index.html" {:root "resources/public"}))
   (resources "/")
   (not-found "Not Found"))
 
