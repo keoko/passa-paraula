@@ -1,21 +1,20 @@
 # passa-paraula
 
 ## TODO
-- nice navbar
-
-
+- heroku
 
 ## NICE TO HAVE
+- clean up README (install section, example, etc.)
 - cljs.tests
 - team name
 - responsive design
 - "how to play" page (letters) or just some div with all keys used
-- clean up README (install section, example, etc.)
 - re-frame article
-- timer & score on their own component
 
 
 ## DONE
+- timer & score on their own component
+- nice navbar
 - center buttons
 - score/timer in a top navbar
 - glyphicons as buttons
