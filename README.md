@@ -1,67 +1,21 @@
 # passa-paraula
 
-## TODO
-- heroku
+Simple game to play with Clojurescript and Reagent libraries.
 
-## NICE TO HAVE
-- clean up README (install section, example, etc.)
-- cljs.tests
-- team name
-- responsive design
-- "how to play" page (letters) or just some div with all keys used
-- re-frame article
+## Usage
 
+Run the following commands on your terminal:
 
-## DONE
-- timer & score on their own component
-- nice navbar
-- center buttons
-- score/timer in a top navbar
-- glyphicons as buttons
-- bootstrap
-- control start/re-start game 
-- remove navigation
-- remove svg
-- position score & timer
-- fluid positioning based on window size as ui state
-- legend
-- show game-status: (start game, end game, pause game)
-- remove end page and just show the number
-- highlight current letter
-- play/replay button
-- pause timer
-- format time in minutes:seconds
-- move score and timer to the center 
-- remove web server dependency
-- circle in CSS3
-- CSS circles
-- colours
-- select letters set
-- letter positioning inside the circle
-- text positioning & font
-- refactor code (UI logic, game logic)
-- circles
-- circles + letters
-- reagent integration
-- keyboard events
-- state (ok, fail, and passed)
-- logic: jump to next passed letter
-- how to debug clojurescript
-- figwheel
-- logic: highlight current letter
-- logic: end of game
-- scoring
-- play again
-- fix highlight first letter 'A'
-- timer
-- A circle starts from left, not up
+```
+lein figwheel
+lein ring server
+```
 
+Check the game in http://localhost:3000
 
-## Emacs & others
-- autocomplete
-- cider shortcuts
-- figwheel autocomplete
-- figwheel command history
+You can also play it online on http://passa-paraula.herokuapp.com/index.html
 
-## links
-- https://github.com/pointslope/reagent-svg-demo/blob/master/src/cljs/svg/app.cljs
+## Next steps
+- test it with: cljs.test
+- check re-frame framework: https://github.com/Day8/re-frame
+- improve HTML elements positioning 
