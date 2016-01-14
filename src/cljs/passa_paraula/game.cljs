@@ -64,15 +64,6 @@
 (defn get-time []
   (:time @app-state))
 
-(defn toggle-status []
-  (let [next-status {:pause :run
-                     :run :pause
-                     :start :run
-                     :end :start}
-        toggle-it (fn [ts] (get next-status ts))]
-    (swap! app-state update-in [:state] toggle-it)
-    (when (game-in-start?)
-      (reset-state!))))
 
 (defn game-paused? []
   (= :pause (:state @app-state)))
@@ -86,13 +77,17 @@
 (defn game-in-start? []
   (= :start (:state @app-state)))
 
+(defn game-in-pause? []
+  (= :pause (:state @app-state)))
+
 (defn end-game []
   (swap! app-state update-in [:state] (fn [_] :end)))
 
+(defn pause-game []
+  (swap! app-state update-in [:state] (fn [_] :pause)))
 
 (defn get-state []
   (:state @app-state))
-
 
 (defn handle-letter [letter-id status]
   (when (game-in-run?)
@@ -101,3 +96,13 @@
     (jump-next-letter)
     (when (end-game?)
       (end-game))))
+
+(defn toggle-status []
+  (let [next-status {:pause :run
+                     :run :pause
+                     :start :run
+                     :end :start}
+        toggle-it (fn [ts] (get next-status ts))]
+    (swap! app-state update-in [:state] toggle-it)
+    (when (game-in-start?)
+      (reset-state!))))

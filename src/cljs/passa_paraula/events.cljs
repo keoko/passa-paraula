@@ -29,3 +29,6 @@
 (defn hook-window-resize! []
   (.addEventListener js/window "resize" view/recalculate-window-center!))
 
+(defn hook-window-blur! []
+  (.addEventListener js/window "blur" game/pause-game))
+
