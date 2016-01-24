@@ -13,7 +13,7 @@ lein ring server
 
 Check the game in http://localhost:3000
 
-You can also play it online on http://passa-paraula.herokuapp.com/index.html
+You can also play it online on http://passa-paraula.herokuapp.com
 
 ## Next steps
 - cannot edit directly letters field in preferences page. Workaround, edit the comma-separated letters list on another field, and copy paste it into the letters field.
