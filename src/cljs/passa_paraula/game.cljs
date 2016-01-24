@@ -2,21 +2,25 @@
   (:require  [reagent.core :as reagent :refer [atom]]))
 
 
-(def letters [\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z])
-(def num-letters (count letters))
+(def default-letters [\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z])
 
+(def default-team-name "passa-paraula")
+(def default-team-color "black")
 
-(def starting-state {:pos 0
+(def default-state {:pos 0
                      :score 0
                      :state :start
                      :time (* 60 60) ; 1 hour
-                     :status (vec (take num-letters (repeat :init)))})
+                     :team-name default-team-name
+                     :team-color default-team-color
+                     :letters default-letters
+                     :status (vec (take (count default-letters) (repeat :init)))})
 
-(def app-state (atom starting-state))
+(def app-state (atom default-state))
 
 
 (defn reset-state! []
-  (reset! app-state starting-state))
+  (reset! app-state default-state))
 
 (defn cur-letter-id []
   (:pos @app-state))
@@ -58,11 +62,24 @@
 (defn get-letter-status [pos]
   (get-in @app-state [:status pos]))
 
+
+(defn get-letters []
+  (:letters @app-state))
+
+(defn num-letters [] 
+  (count (get-letters)))
+
 (defn get-score []
   (:score @app-state))
 
 (defn get-time []
   (:time @app-state))
+
+(defn get-team-color []
+  (:team-color @app-state))
+
+(defn get-team-name []
+  (:team-name @app-state))
 
 
 (defn game-paused? []
@@ -88,6 +105,9 @@
 
 (defn get-state []
   (:state @app-state))
+
+(defn get-app-state []
+  app-state)
 
 (defn handle-letter [letter-id status]
   (when (game-in-run?)

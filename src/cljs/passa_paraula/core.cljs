@@ -12,4 +12,4 @@
   (events/hook-clock-update!)
   (events/hook-window-resize!)
   (events/hook-window-blur!)
-  (view/mount-root))
+  (view/init!))

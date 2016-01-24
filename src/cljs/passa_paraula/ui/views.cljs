@@ -1,9 +1,13 @@
 (ns passa-paraula.ui.views
   (:require [passa-paraula.game :as game]
-            [reagent.core :as reagent :refer [atom]]))
+            [reagent.core :as reagent :refer [atom]]
+            [reagent.session :as session]
+            [secretary.core :as secretary :include-macros true]
+            [accountant.core :as accountant]
+            [reagent-forms.core :refer [bind-fields init-field value-of]]))
 
 
-(def ui-state (atom {})) 
+(def ui-state (atom {}))
 
 (def status-colors {:ok "green"
                     :failed "red"
@@ -12,7 +16,7 @@
 
 
 (def cur-letter-color "purple")
-(def letter-color "black")
+(def letter-color "blue")
 (def letter-width "1")
 
 (defn set-letter-color [pos]
@@ -40,11 +44,11 @@
 
 (defn build-circles []
   (let [get-circle (fn [x] {
-                            :x (* (:radius @ui-state)  (Math/cos (-  (/ (* Math/PI 2 x) game/num-letters) (/ Math/PI 2))))
-                            :y  (* (:radius @ui-state)  (Math/sin (-  (/ (* Math/PI 2 x) game/num-letters) (/ Math/PI 2))))
+                            :x (* (:radius @ui-state)  (Math/cos (-  (/ (* Math/PI 2 x) (game/num-letters)) (/ Math/PI 2))))
+                            :y  (* (:radius @ui-state)  (Math/sin (-  (/ (* Math/PI 2 x) (game/num-letters)) (/ Math/PI 2))))
                             :pos x
-                            :letter (get game/letters x)})]
-       (map get-circle (range game/num-letters))))
+                            :letter (get (game/get-letters) x)})]
+    (map get-circle (range (game/num-letters)))))
 
 
 
@@ -127,24 +131,86 @@
   [:span.navbar-text.pull-right {:id "time"} 
    "timer " [:span.badge (format-time (game/get-time))]])
 
-(defn home-page []
+(defn preferences-button-component []
   [:div
-   [:nav.navbar.navbar-fixed-top.navbar-inverse
-    [:a.navbar-brand {:style {:color "white"}} "passa-paraula"]    
-    [:div.navbar-header
-     [score-component]
-     [timer-component]]]
-   [buttons-component]
-   [board-component]]) 
+   [:button {:on-click #(secretary/dispatch! "/preferences")} "preferences"]]
 
+)
+
+(defn navbar-component []
+  [:nav.navbar.navbar-fixed-top.navbar-inverse {:style {:background-color (game/get-team-color)}}
+;;    [:a.navbar-brand {:style {:color "white"}} (game/get-team-name)]    
+    [:div.navbar-header
+     [:div (game/get-team-name)]
+     [score-component]
+     [timer-component]
+     [preferences-button-component]]])
+
+
+
+(defn home-page []
+  [:div 
+   [navbar-component]
+   [buttons-component]
+   [board-component]
+   ])
+
+(defn set-preferences [x]
+  (.log js/console "test"))
+
+(defn row [label input]
+  [:div.row
+   [:div.col-md-2 [:label label]]
+   [:div.col-md-5 input]])
+
+(defn input [label type id]
+  (row label [:input.form-control {:field type :id id}]))
+
+(defn convert-letters [[id] value {:keys [letters] :as state}]
+  (when (= id :letters)
+    (assoc state :letters (clojure.string/split value #","))))
+
+(def form-template
+  [:div
+   (input "team color" :text :team-color)
+   (input "team name" :text :team-name)
+   (input "time (seconds)" :text :time)
+   (input "letters" :text :letters)])
+
+(defn preferences-page []
+  [:div
+   [:div.page-header [:h1 "Preferences"]]
+   [bind-fields form-template (game/get-app-state) convert-letters]
+   [:button.btn.btn-default
+    {:on-click #(secretary/dispatch! "/")}
+    "save"]])
+
+
+(defn current-page []
+  [:div [(session/get :current-page)]])
+
+
+;; -------------------------
+;; Routes
+
+(secretary/defroute "/" []
+  (session/put! :current-page #'home-page))
+
+(secretary/defroute "/preferences" []
+  (session/put! :current-page #'preferences-page))
 
 (defn recalculate-window-center! []
   (let [width  (.-innerWidth js/window)
         height (.-innerHeight js/window)]
-    (reset! ui-state {:center-x (/ width 2)
-                      :center-y (/ height 2)
-                      :circle-radius (/ width 20)
-                      :radius (/ width 4.5)})))
+    (swap! ui-state merge {:center-x (/ width 2)
+                           :center-y (/ height 2)
+                           :circle-radius (/ width 20)
+                           :radius (/ width 4.5)})))
 
 (defn mount-root []
-  (reagent/render [home-page] (.getElementById js/document "app")))
+  (reagent/render [current-page] (.getElementById js/document "app")))
+
+(defn init! []
+  (accountant/configure-navigation!)
+  (accountant/dispatch-current!)
+  (mount-root))

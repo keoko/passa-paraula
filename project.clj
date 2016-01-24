@@ -10,7 +10,7 @@
                  [ring-server "0.4.0"]
                  [cljsjs/react "0.13.1-0"]
                  [reagent "0.5.0"]
-                 [reagent-forms "0.5.1"]
+                 [reagent-forms "0.5.13"]
                  [reagent-utils "0.1.4"]
                  [ring "1.3.2"]
                  [ring/ring-defaults "0.1.4"]
@@ -19,7 +19,9 @@
                  [hiccup "1.0.5"]
                  [environ "1.0.0"]
                  [org.clojure/clojurescript "0.0-3291" :scope "provided"]
-                 [secretary "1.2.3"]]
+                 [secretary "1.2.3"]
+                 [venantius/accountant "0.1.6"
+                  :exclusions [org.clojure/tools.reader]]]
 
   :plugins [[lein-ring "0.9.1"]
             [lein-environ "1.0.0"]
