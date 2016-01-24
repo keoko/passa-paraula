@@ -16,10 +16,7 @@ Check the game in http://localhost:3000
 You can also play it online on http://passa-paraula.herokuapp.com/index.html
 
 ## Next steps
-- align preferences button in nav
-- align team name in nav
-- update status when letters change
-- position letter circle
+- cannot edit directly letters field in preferences page. Workaround, edit the comma-separated letters list on another field, and copy paste it into the letters field.
 - test it with: cljs.test
 - check re-frame framework: https://github.com/Day8/re-frame
-- improve HTML elements positioning 
+- check om next

@@ -1,6 +1,6 @@
 body {
     margin: 0 auto;
-    padding-bottom: 70px;
+    padding-top: 70px;
 }
 
 /*
@@ -58,4 +58,21 @@ blink {
     left: 0;
     text-align: center;
     margin: auto;
+}
+
+
+.navbar-collapse.collapse {
+display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -15px !important;
+}
+
+.navbar-right {
+float: right!important;
 }

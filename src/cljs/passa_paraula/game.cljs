@@ -7,14 +7,17 @@
 (def default-team-name "passa-paraula")
 (def default-team-color "black")
 
+(defn init-letters-status [letters]
+  (vec (take (count letters) (repeat :init))))
+
 (def default-state {:pos 0
-                     :score 0
-                     :state :start
-                     :time (* 60 60) ; 1 hour
-                     :team-name default-team-name
-                     :team-color default-team-color
-                     :letters default-letters
-                     :status (vec (take (count default-letters) (repeat :init)))})
+                    :score 0
+                    :state :start
+                    :time (* 60 60) ; 1 hour
+                    :team-name default-team-name
+                    :team-color default-team-color
+                    :letters default-letters
+                    :status (init-letters-status default-letters)})
 
 (def app-state (atom default-state))
 

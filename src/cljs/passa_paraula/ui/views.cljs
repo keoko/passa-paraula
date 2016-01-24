@@ -126,30 +126,30 @@
   [:span.navbar-text.pull-left {:id "score"} 
     " score " [:span.badge (game/get-score)]])
 
-
 (defn timer-component []
   [:span.navbar-text.pull-right {:id "time"} 
    "timer " [:span.badge (format-time (game/get-time))]])
 
 (defn preferences-button-component []
-  [:div
-   [:button {:on-click #(secretary/dispatch! "/preferences")} "preferences"]]
-
-)
+  [:a {:on-click #(secretary/dispatch! "/preferences")} "preferences"])
 
 (defn navbar-component []
-  [:nav.navbar.navbar-fixed-top.navbar-inverse {:style {:background-color (game/get-team-color)}}
-;;    [:a.navbar-brand {:style {:color "white"}} (game/get-team-name)]    
+  [:nav.navbar.navbar-fixed-top.navbar-default
+   {:style {:background-color (game/get-team-color)}}
+   [:div.container
     [:div.navbar-header
-     [:div (game/get-team-name)]
-     [score-component]
-     [timer-component]
-     [preferences-button-component]]])
+     [:a.navbar-brand {:href "#"} 
+      (game/get-team-name)]]
+    [:ul.nav.navbar-nav
+     [:li [score-component]]]
+    [:ul.nav.navbar-nav.navbar-right
+     [:li [preferences-button-component]]
+     [:li [timer-component]]]]])
 
 
 
 (defn home-page []
-  [:div 
+  [:div.container 
    [navbar-component]
    [buttons-component]
    [board-component]
@@ -168,7 +168,9 @@
 
 (defn convert-letters [[id] value {:keys [letters] :as state}]
   (when (= id :letters)
-    (assoc state :letters (clojure.string/split value #","))))
+    (let [letters (clojure.string/split value #",")]
+      (merge state {:letters letters 
+                    :status (game/init-letters-status letters)}))))
 
 (def form-template
   [:div
@@ -179,11 +181,14 @@
 
 (defn preferences-page []
   [:div
-   [:div.page-header [:h1 "Preferences"]]
-   [bind-fields form-template (game/get-app-state) convert-letters]
-   [:button.btn.btn-default
-    {:on-click #(secretary/dispatch! "/")}
-    "save"]])
+   [navbar-component]
+   [:div.container
+    [:h1.page-header "preferences"]
+    [:div.jumbotron
+     [bind-fields form-template (game/get-app-state) convert-letters]
+     [:button.btn.btn-default
+      {:on-click #(secretary/dispatch! "/")}
+      "save"]]]])
 
 
 (defn current-page []
@@ -201,11 +206,12 @@
 
 (defn recalculate-window-center! []
   (let [width  (.-innerWidth js/window)
-        height (.-innerHeight js/window)]
+        height (.-innerHeight js/window)
+        radius (if (< width height) width height)]    
     (swap! ui-state merge {:center-x (/ width 2)
                            :center-y (/ height 2)
-                           :circle-radius (/ width 20)
-                           :radius (/ width 4.5)})))
+                           :circle-radius (/ radius 16)
+                           :radius (/ radius 2.5)})))
 
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
