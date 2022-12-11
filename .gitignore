@@ -11,3 +11,9 @@ pom.xml.asc
 /resources/public/js
 /out
 /.repl
+/node_modules/
+/src/passa_paraula/.clj-kondo/
+/src/passa_paraula/.lsp/
+/public/js/cljs-runtime/*.js
+/public/js/cljs-runtime/
+/public/js/manifest.edn
